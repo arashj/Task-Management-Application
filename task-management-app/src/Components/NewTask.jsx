@@ -1,21 +1,25 @@
 /* eslint-disable react/prop-types */
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Input from "./Input";
 import Modal from "./Modal";
 import ToggleButton from "./ToggleButton";
 
-export default function NewTask({ onAdd, onCancel, task }) {
+export default function NewTask({ onAdd, onCancel }) {
   const [updateIsCompleted, setUpdateIsCompleted] = useState(false);
+  console.log("This is line 9:", updateIsCompleted);
   const modal = useRef();
 
   const title = useRef();
   const Description = useRef();
-  const DueDate = useRef();
+
+  const [DueDate, setdueDate] = useState();
+  // const DueDate = useRef();
 
   function handleSave() {
     const enteredTitle = title.current.value;
     const enteredDescription = Description.current.value;
-    const enteredDueDate = DueDate.current.value;
+    // const enteredDueDate = DueDate.current.value;
+    const enteredDueDate = DueDate;
 
     if (
       enteredTitle.trim() === "" ||
@@ -25,6 +29,7 @@ export default function NewTask({ onAdd, onCancel, task }) {
       modal.current.open();
       return;
     }
+    console.log("this is isCompleted: ", updateIsCompleted);
 
     onAdd({
       title: enteredTitle,
@@ -37,6 +42,25 @@ export default function NewTask({ onAdd, onCancel, task }) {
   const handleToggleIsCompleted = () => {
     setUpdateIsCompleted(!updateIsCompleted);
   };
+
+  // Function to determine if a task is overdue
+  const isOverdue = (dueDate) => {
+    const today = new Date();
+    const taskDueDate = new Date(dueDate);
+    return taskDueDate < today;
+  };
+
+  useEffect(() => {
+    if (isOverdue(DueDate)) {
+      setUpdateIsCompleted("null");
+    } else {
+      setUpdateIsCompleted(false);
+    }
+  }, [DueDate]);
+
+  function HandleChangeDueDate(e) {
+    setdueDate(e.target.value);
+  }
 
   return (
     <>
@@ -71,13 +95,15 @@ export default function NewTask({ onAdd, onCancel, task }) {
         <div>
           <Input type="text" ref={title} label="Title" />
           <Input ref={Description} label="Description" Textarea />
-          <Input type="date" ref={DueDate} label="Due Date" />
+          <Input type="date" onChange={HandleChangeDueDate} label="Due Date" />
         </div>
+
+        {console.log("This is in newTask", updateIsCompleted)}
 
         <ToggleButton
           isCompleted={updateIsCompleted}
           onToggle={handleToggleIsCompleted}
-          isOverdue={false}
+          isOverdue={isOverdue(DueDate)}
         />
       </div>
     </>

@@ -1,4 +1,7 @@
+/* eslint-disable react/display-name */
+
 const ToggleButton = ({ isCompleted, onToggle, isOverdue }) => {
+  console.log("in ToggleButton: ", isCompleted);
   return (
     <>
       {!isOverdue ? (
@@ -11,7 +14,12 @@ const ToggleButton = ({ isCompleted, onToggle, isOverdue }) => {
           {isCompleted ? "Completed" : "Pending"}
         </button>
       ) : (
-        <p className="px-4 py-2 rounded-full bg-gray-800 text-white">Overdue</p>
+        <button
+          className="px-4 py-2 rounded-full text-white bg-gray-800"
+          disabled
+        >
+          Overdue
+        </button>
       )}
     </>
   );

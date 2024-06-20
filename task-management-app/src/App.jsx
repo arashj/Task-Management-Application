@@ -15,10 +15,13 @@ function App() {
   const [filter, setFilter] = useState("all");
 
   const filteredTasks = tasksState.tasks.filter((task) => {
-    if (filter === "completed") return task.isCompleted;
-    if (filter === "incomplete") return !task.isCompleted;
+    if (filter === "completed") return task.isCompleted == true;
+    if (filter === "pending") return task.isCompleted === false;
+    if (filter === "Overdue") return task.isCompleted === "null";
     return true; // 'all' or any other value will show all tasks
   });
+
+  console.log("2. app : ", filteredTasks);
 
   function handleDeleteTask(id) {
     setTasksState((prevState) => {
@@ -36,6 +39,7 @@ function App() {
     updateDate,
     updateIsCompleted
   ) => {
+    console.log("1. app => handleUpdateTask");
     setTasksState((prevState) => ({
       ...prevState,
       tasks: prevState.tasks.map((task) => {
@@ -72,7 +76,7 @@ function App() {
     setTasksState((prevState) => {
       return {
         ...prevState,
-        selectedTaskId: undefined,
+        selectedTaskId: "listed",
       };
     });
   }
@@ -88,7 +92,7 @@ function App() {
 
   let content = (
     <Tasklist
-      tasks={tasksState.tasks}
+      title={filter}
       onDeleteTask={handleDeleteTask}
       onUpdateTask={handleUpdateTask}
       onAddTask={handleStartAddTask}
@@ -99,9 +103,7 @@ function App() {
   if (tasksState.selectedTaskId === undefined) {
     content = <NoTaskCreated onStartAddTask={handleStartAddTask} />;
   } else if (tasksState.selectedTaskId === null) {
-    content = (
-      <NewTask onAdd={handleAddTask} onCancel={handleCancelAddTask} task="" />
-    );
+    content = <NewTask onAdd={handleAddTask} onCancel={handleCancelAddTask} />;
   }
 
   return (

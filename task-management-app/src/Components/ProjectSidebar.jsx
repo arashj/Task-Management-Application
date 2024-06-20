@@ -1,9 +1,11 @@
+/* eslint-disable react/prop-types */
 import { useContext, createContext, useState } from "react";
 import { MdHome } from "react-icons/md";
 import { FaCheck } from "react-icons/fa";
 import { TbCalendarDue } from "react-icons/tb";
 import { MdPendingActions } from "react-icons/md";
 import SortBy from "./SortBy";
+import { MdAssignmentLate } from "react-icons/md";
 
 export default function ProjectSidebar({
   tasksState,
@@ -60,13 +62,23 @@ export default function ProjectSidebar({
             </button>
           </li>
 
-          <li className={cssClasses("incomplete")}>
+          <li className={cssClasses("pending")}>
             <MdPendingActions />
             <button
               className="overflow-hidden transition-all w-52 ml-3"
-              onClick={() => handleFilterClick("incomplete")}
+              onClick={() => handleFilterClick("pending")}
             >
               Pending
+            </button>
+          </li>
+
+          <li className={cssClasses("Overdue")}>
+            <MdAssignmentLate />
+            <button
+              className="overflow-hidden transition-all w-52 ml-3"
+              onClick={() => handleFilterClick("Overdue")}
+            >
+              Overdue
             </button>
           </li>
 

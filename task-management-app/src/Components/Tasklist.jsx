@@ -3,16 +3,23 @@ import TaskItem from "./TaskItem";
 
 /* eslint-disable react/prop-types */
 export default function Tasklist({
-  tasks,
+  title,
   onDeleteTask,
   onUpdateTask,
   onAddTask,
   filteredTasks,
 }) {
+  console.log("Tasklist: ");
+  const header = () => {
+    if (title === "completed") return "Completed";
+    if (title === "pending") return "Pending";
+    if (title === "Overdue") return "Overdue";
+    if (title === "all") return "All Tasks";
+  };
   return (
     <main className="relative p-8 w-full border-2 rounded-lg h-full overflow-y-auto">
       <h1 className="text-2xl font-extrabold relative mb-8">
-        All tasks
+        {header()}
         <span className="absolute bottom-[-0.5rem] left-0 w-12 h-[0.2rem] rounded-md bg-green-500"></span>
       </h1>
 

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 
 const sortOptions = [
+  { title: "Sort by...", property: "sort" },
   { title: "title", property: "title" },
   { title: "date", property: "dueDate" },
 ];
